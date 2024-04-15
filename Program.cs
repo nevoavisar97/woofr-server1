@@ -21,14 +21,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors("AllowAnyOrigin"); // Apply CORS middleware before any other middleware
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// Use the CORS policy
-app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 

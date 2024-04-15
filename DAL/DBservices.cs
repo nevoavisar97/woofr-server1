@@ -170,55 +170,50 @@ public class DBservices
     //    }
 
     //}
-    ////--------------------------------------------------------------------------------------------------
-    //// This method update a user to the user table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int UpdateUser(User user)
-    //{
+    //--------------------------------------------------------------------------------------------------
+    // This method update a user to the user table 
+    //--------------------------------------------------------------------------------------------------
+    public int UploadImage(int id, string image)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
 
-    //    SqlConnection con;
-    //    SqlCommand cmd;
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
 
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
+        cmd = new SqlCommand("SP_UploadProfileImg", con); // create the command
+        cmd.CommandType = CommandType.StoredProcedure; // specify command type as stored procedure
 
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@UserId", user.Id);
-    //    paramDic.Add("@UserName", user.UserName);
-    //    paramDic.Add("@email", user.Email);
-    //    paramDic.Add("@password", user.Password);
+        // Add parameters
+        cmd.Parameters.AddWithValue("@UserID", id);
+        cmd.Parameters.AddWithValue("@ImageBase64", image);
 
-
-    //    cmd = CreateCommandWithStoredProcedure("UpdateUser", con, paramDic); // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
+        try
+        {
+            int result = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command and get the result
+            return result; // return the result to indicate success or failure
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
 
     //--------------------------------------------------------------------------------------------------
     // This method Inserts a user to the user table 
@@ -246,7 +241,7 @@ public class DBservices
         paramDic.Add("@Password", user.Password);
         paramDic.Add("@FirstName", user.FirstName);
         paramDic.Add("@LastName", user.LastName);
-        paramDic.Add("@BirthDate", user.BirthDate);
+        paramDic.Add("@BirthDate", user.Birthday);
         //paramDic.Add("@BioDescription", user.Bio);
         //paramDic.Add("@ProfilePicture", user.ProfilePictureUrl);
         paramDic.Add("@Gender", user.Gender);

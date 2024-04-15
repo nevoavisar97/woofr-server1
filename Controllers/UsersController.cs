@@ -31,9 +31,11 @@ namespace woofr.Controllers
         }
 
         // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("UploadImage/{id}")]
+        public bool UploadImage(int id, [FromBody] string image)
         {
+            User u = new();
+            return u.UploadImage(id, image);
         }
 
         // DELETE api/<UsersController>/5
